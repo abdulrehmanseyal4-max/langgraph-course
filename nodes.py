@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from langgraph.graph import MessagesState
 from langgraph.prebuilt import ToolNode
+from langchain_core.messages import AIMessage
 
 from react import llm, tools
 
@@ -15,5 +16,6 @@ def run_agent_reasoning(state: MessagesState) -> MessagesState:
     Run the agent reasoning Node
     """
     response = llm.invoke([{"role": "system", "content": SYSTEM_MESSAGE}, *state["messages"]])
+    return {"messages": state["messages"] + [response]}
 
 tool_node = ToolNode(tools=tools)
